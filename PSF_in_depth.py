@@ -613,7 +613,7 @@ class LensSystem:
 
         # # マスクありの場合
         cond = "wmask"
-        ini_mask = (Image.open(f"64thru-focusMT01SS_new.png").convert("L"))
+        ini_mask = (Image.open(f"64thru-focusMT_new.png").convert("L"))
         transform = transforms.Compose(
             [
                 transforms.ToTensor(),
@@ -621,12 +621,12 @@ class LensSystem:
             ]
         )
         ini_mask = (normalize_image(transform(ini_mask)).squeeze(0)).to(device)
-        # # ### 中心以外を黒にするとどうなるか．
-        # # xx, yy = torch.meshgrid(torch.arange(MASKSIZE), torch.arange(MASKSIZE), indexing='ij')
-        # # center = MASKSIZE // 2
-        # # ini_mask = ini_mask * ((torch.sqrt((xx - center) ** 2 + (yy - center) ** 2) <= (MASKSIZE/10)).float().to(device))
-        # # save_tensorimage(ini_mask, min = 0, max = 1,  filepath = f"optmask_onlycenter.png")
-        # # ###
+        # ### 中心以外を黒にするとどうなるか．
+        # xx, yy = torch.meshgrid(torch.arange(MASKSIZE), torch.arange(MASKSIZE), indexing='ij')
+        # center = MASKSIZE // 2
+        # ini_mask = ini_mask * ((torch.sqrt((xx - center) ** 2 + (yy - center) ** 2) <= (MASKSIZE/10)).float().to(device))
+        # save_tensorimage(ini_mask, min = 0, max = 1,  filepath = f"optmask_onlycenter.png")
+        # ###
 
 
         # # ランダムマスクの場合

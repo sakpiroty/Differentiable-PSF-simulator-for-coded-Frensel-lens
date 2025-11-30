@@ -3,3 +3,9 @@
 /log
 /psfs
 /pastmask
+/Mask_SA
+opt_3D_polar.py
+opt_3D_spherical.py
+64thru-focus*
+polar.py
+PSF_in_depth_new.py

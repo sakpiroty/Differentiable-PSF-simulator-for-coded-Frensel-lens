@@ -19,7 +19,7 @@ import torch.nn.functional as F
 import random
 import math
 
-device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 reporter = MemReporter()
 
 refractiveindex = 1.492
@@ -31,7 +31,7 @@ pixel_size = 0.3125 #(mm)
 IMAGESIZE = 512 #(pix)
 MASKSIZE = 64 #(pix)
 pixel_size_MASK = diameter/MASKSIZE #(mm)
-NRAYS = 1000
+NRAYS = 500
 
 # PSFNUM = 25
 targetmodel = "thru-focus"
@@ -42,7 +42,7 @@ df = pd.read_csv(file_path)
 targetloc = torch.tensor(df[["x", "y", "z"]].values, dtype=torch.float32, device = device)
 PSFNUM =  targetloc.size()[0]
 
-PSFSIZE = 200
+PSFSIZE = 512
 PSFCENTER = int((PSFNUM + 1)/2)
 EPOCHS = 8
 sep_mask = 4
@@ -781,8 +781,8 @@ class LensSystem:
             regions[(radii[i] <= distance) & (radii[i+1] <= distance)] = i + 1
         regions.to(device)
 
-        if os.path.exists("./log/ray_behind_Fresnel_" + targetmodel + ".pt"):
-            ray_behind_Fresnel = torch.load("./log/ray_behind_Fresnel_" + targetmodel + ".pt", map_location=device)
+        if os.path.exists("./log/ray_behind_Fresnel_" + targetmodel + "_500ray.pt"):
+            ray_behind_Fresnel = torch.load("./log/ray_behind_Fresnel_" + targetmodel + "_500ray.pt", map_location=device)
 
         else:
             ray_behind_Fresnel = []
@@ -863,12 +863,12 @@ class LensSystem:
                 lossMTF = torch.mean(lacked_freq)
 
                 # ロス3：光線透過率を最大化
-                lossTRANS = ((transmission / transmission_ref) - 0.5)**2
+                # lossTRANS = ((transmission / transmission_ref) - 0.5)**2
                 # TRANS = (torch.mean(intensitymap) / torch.mean(intensitymap_ref))
                 # lossTRANS = -(1.0/(1+torch.exp(-100*(TRANS-tau))))
                 
                 # lossTRANS = -(TRANS)**(0.5)
-                # lossTRANS = ((torch.mean(intensitymap) / torch.mean(intensitymap_ref)) - tau)**2
+                lossTRANS = ((torch.mean(intensitymap) / torch.mean(intensitymap_ref)) - 0.5)**2
                 # print((transmission / transmission_ref))
                 # print((torch.sum(intensitymap) / torch.sum(intensitymap_ref)))
                 # lossTRANS = -intensitymap.mean()
@@ -938,7 +938,7 @@ class LensSystem:
         # Save the optimized image
         save_tensorimage(x, min = 0, max = 1, filepath =  f"./Result_optimized_mask_{MASKSIZE}.png")
 
-tau_list = [0.12]
+tau_list = [0.056, 0.057, 0.058, 0.059]
 # tau_list = [0.021, 0.022, 0.023,0.024,0.025,0.026,0.027,0.028,0.029]
 for tau in tau_list:
     lsys = LensSystem(['data/fresnel.csv'])

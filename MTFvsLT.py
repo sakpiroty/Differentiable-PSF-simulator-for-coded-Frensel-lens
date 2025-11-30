@@ -25,7 +25,7 @@ pixel_size = 0.3125 #(mm)
 IMAGESIZE = 512 #(pix)
 MASKSIZE = 64  #(pix)
 pixel_size_MASK = diameter/MASKSIZE #(mm)
-NRAYS = 1000
+NRAYS = 500
 PSFNUM = 5
 PSFSIZE = int(IMAGESIZE * PSFNUM / (PSFNUM - 1))
 PSFCENTER = int((PSFNUM + 1)/2)
@@ -630,8 +630,8 @@ class LensSystem:
             xx, yy = torch.meshgrid(torch.arange(MASKSIZE), torch.arange(MASKSIZE), indexing='ij')
             center = MASKSIZE // 2
             ini_mask = ini_mask * ((torch.sqrt((xx - center) ** 2 + (yy - center) ** 2) <= m_size).float().to(device))
-            save_tensorimage(ini_mask, min = 0, max = 1,  filepath = f"Mask_SA_{m_size}.png")
-            ini_mask = (Image.open(f"Mask_SA_{m_size}.png").convert("L"))
+            save_tensorimage(ini_mask, min = 0, max = 1,  filepath = f"./Mask_SA/Mask_SA_{m_size}.png")
+            ini_mask = (Image.open(f"./Mask_SA/Mask_SA_{m_size}.png").convert("L"))
             transform = transforms.Compose(
                 [
                     transforms.ToTensor(),
