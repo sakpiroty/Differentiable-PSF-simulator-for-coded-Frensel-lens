@@ -10,14 +10,14 @@ Example of the simulated PSFs in different aperture conditions.
 The conceptual diagram for the entire process of the aperture optimization.
 <img width="2462" height="1204" alt="image" src="https://github.com/user-attachments/assets/cdc1c6ee-6705-45bf-80c7-3804eeb88ae8" />
 
-# Requirements
+## Requirements
 Python 3
 
 Pillow 
 
 Torch 
 
-# How to Use
+## How to Use
 
 ・opt_3D.py: optimizing the coded aperture in specific optical configuration of the coded large-aperture projector using Fresnel lens.
 
