@@ -49,7 +49,7 @@ sep_mask = 4
 lr = 0.05
 black_base, white_base = 0, 1 #マスクの最大透過率
 
-df = pd.read_csv("../raytracing/data/womask_intensity_depth.csv")
+df = pd.read_csv("./data/womask_intensity_depth.csv")
 ref_intensity = torch.tensor(df[["0", "1", "2","3","4", "5", "6","7", "8", "9","10"]].values, dtype=torch.float32, device = device).t()
 
 

@@ -13,7 +13,7 @@ from torch.optim import Adam
 import os
 import cv2
 
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 refractiveindex = 1.492
 diameter = 500.0 #(mm)
